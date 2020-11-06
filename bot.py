@@ -26,7 +26,8 @@ class AlphaBot(commands.Bot):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.config = Config().load()
+        self.config = Config()
+
         self.log = kwargs.get("log")
 
 
@@ -68,7 +69,8 @@ class AlphaBot(commands.Bot):
 
     async def start(self, *args, **kwargs):
         self.session = ClientSession()
-        await self.load_modules()
+        load_modules = await self.load_modules()
+        self.log.info(f"Load modules result: \n{load_modules}")
         token = self.config.get("token")
         if not token:
             raise KeyError("Token not found in config!")
@@ -109,7 +111,7 @@ def main():
     setup_logging()
     log = logging.getLogger(__name__)
     # create the alphabot instance
-    bot_prefix = Config().load().get("prefix", "alpha")+" "
+    bot_prefix = Config().get("prefix", "alpha")+" "
     bot_Prefix = bot_prefix.capitalize()
     bot = AlphaBot(
         command_prefix=commands.when_mentioned_or(bot_prefix, bot_Prefix),
@@ -138,3 +140,4 @@ def main():
 
 if __name__=="__main__":
     main()
+

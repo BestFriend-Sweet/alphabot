@@ -1,7 +1,7 @@
 {
     "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    "main_guild": "**_AlphaBet_**",
-    "admin_roles": [000000000000000000],
-    "prefix": "alpha",
+    "main_guild": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "admin_roles": [0],
+    "prefix": "bot",
     "cheese_weight": 30
 }

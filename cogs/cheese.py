@@ -14,14 +14,19 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
 
     def __init__(self, client):
         self.client = client
+        self.client.log.info("loading ze cheese!")
         self.DEBUG = self.client.config.get("debug", False)
         self.cheese_emoji = u"\U0001F9C0"
         self.thumbup_emoji = u"\U0001F44D"
         self.thumbdown_emoji = u"\U0001F44E"
         self.last_cheese = dt.utcnow()
-        # TODO: add a check if this exists if not create it
-        self.cheese_weight = (
-            100 - self.client.config.get("cheese_weight", 50), 100)
+        self.client.log.info(self.client.config)
+        cheese_weight = self.client.config.get("cheese_weight")
+        if not cheese_weight:
+            cheese_weight = 30
+            client.config["cheese_weight"] = cheese_weight
+            client.config.save()
+        self.cheese_weight = (100 - cheese_weight, 100)
         self.cooldown = 30
         self.store_file = 'cheese_store.json'
         self.scores = self.load_memory()

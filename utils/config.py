@@ -1,40 +1,28 @@
-from ast import literal_eval
 import json
 from os import path
 
-class Config():
 
+class Config(dict):
 
     def __init__(self, filename='config.json'):
         self.conf_file = filename
-        if not path.isfile(self.conf_file):
-            raise FileNotFoundError
-
+        self.template = """{
+            "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "main_guild": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "admin_roles": [0],
+            "prefix": "alpha",
+            "cheese_weight": 30
+        }"""
+        self.load()
 
     def load(self):
-        with open(self.conf_file) as conf:
-            return json.load(conf)
+        try:
+            with open(self.conf_file) as conf:
+                self.update(json.load(conf))
+        except FileNotFoundError as e:
+            self.update(json.loads(self.template))
+            self.save()
 
-
-    def save(self, config):
+    def save(self):
         with open(self.conf_file, 'w') as conf:
-            json.dump(conf, config)
-
-
-    def set(self, key: str, val):
-        """
-        Updates a single entry in the config file
-        """
-        # read config from disk
-        config = self.load()
-        # check item exists
-        if config.get(key):
-            # if true, log previous value
-            print(f"Config value for '{key}' changed "\
-                "from '{config.get(key)}' to '{val}'")
-        else:
-            # if false, log a new key val pair
-            print(f"Config value for '{key}' set to '{val}'")
-        config[key] = literal_eval(val)
-        # write config back to disk
-        self.save(config)
+            json.dump(self.copy(), conf)
