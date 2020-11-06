@@ -95,8 +95,8 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         if chance_result:
             if (dt.utcnow() - self.last_cheese).total_seconds() < self.cooldown:
                 return
-            await self.add_cheese(client, msg)
             self.last_cheese = dt.utcnow()
+            await self.add_cheese(client, msg)
 
     @commands.command()
     async def scores(self, ctx, *, limit=5):
