@@ -75,11 +75,10 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
             reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
             self.scores[str(user.id)] += 1
             await self.save_memory()
-        except asyncio.TimeoutError:
-            message_store += self.thumbdown_emoji
+            message_store += f"{self.thumbup_emoji} {user} collected the cheese!"
             return message_store
-        else:
-            message_store += f"{self.thumbup_emoji}\n"
+        except asyncio.TimeoutError:
+            message_store += f"{self.thumbdown_emoji} nobody collected the cheese"
             return message_store
 
     @commands.Cog.listener()
