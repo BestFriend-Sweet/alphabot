@@ -65,11 +65,13 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         message = 'A wild cheese appeared!'
         await msg.channel.send(message)
         await msg.add_reaction(self.cheese_emoji)
-        await msg.channel.send(await self.check_reaction(client))
+        await msg.channel.send(await self.check_reaction(client, msg))
 
-    async def check_reaction(self, client: Client):
+    async def check_reaction(self, client: Client, msg: Message):
         def check(reaction, user):
-            return not user.bot and str(reaction.emoji) == self.cheese_emoji
+            return not user.bot \
+                and msg.id == reaction.message.id \
+                and str(reaction.emoji) == self.cheese_emoji
         message_store = ""
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
