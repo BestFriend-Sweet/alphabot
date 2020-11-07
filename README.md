@@ -27,3 +27,4 @@
 
 ## TODOs
 - Upgrade to Python 3.9
+- Change cheese cog to not expect a config from the client, have parameters passed in
