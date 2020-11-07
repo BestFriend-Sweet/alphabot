@@ -1,6 +1,7 @@
 """This is a cog for a discord.py bot.
 It drops random cheese for people to pick up
 """
+from utils.config import Config
 from collections import defaultdict
 from datetime import datetime as dt
 from discord import Activity, Client, DMChannel, Embed, Message
@@ -15,17 +16,14 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     def __init__(self, client):
         self.client = client
         self.client.log.info("loading ze cheese!")
-        self.DEBUG = self.client.config.get("debug", False)
+        self.config = Config('cheese_config.json', no_template=True, live=True)
+        self.DEBUG = self.config.get("debug", False)
         self.cheese_emoji = u"\U0001F9C0"
         self.thumbup_emoji = u"\U0001F44D"
         self.thumbdown_emoji = u"\U0001F44E"
         self.last_cheese = dt.utcnow()
-        self.client.log.info(self.client.config)
-        cheese_weight = self.client.config.get("cheese_weight")
-        if not cheese_weight:
-            cheese_weight = 30
-            client.config["cheese_weight"] = cheese_weight
-            client.config.save()
+        self.client.log.info(self.config)
+        cheese_weight = self.config.get("cheese_weight", 30)
         self.cheese_weight = (100 - cheese_weight, 100)
         self.cooldown = 30
         self.store_file = 'cheese_store.json'
