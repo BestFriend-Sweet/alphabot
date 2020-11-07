@@ -79,6 +79,7 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
         message_store = ""
         try:
             reaction, user = await client.wait_for('reaction_add', timeout=60.0, check=check)
+            await reaction.clear()
             self.scores_store[str(user.id)] += 1
             await self.save_memory()
             message_store += f"{self.emojis['thumbup_emoji']} {user} collected the cheese!"
