@@ -55,7 +55,9 @@ class Cheese(commands.Cog, command_attrs=dict(hidden=True)):
     def load_memory(self):
         try:
             with open(self.store_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                scores = defaultdict(int)
+                scores.update(json.load(f))
+                return scores
         except Exception as e:
             self.client.log.warning(
                 f"Unable to load cheese memory from file! : {e}")
