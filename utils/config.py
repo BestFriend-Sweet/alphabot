@@ -4,8 +4,9 @@ from os import path
 
 class Config(dict):
 
-    def __init__(self, filename='config.json'):
+    def __init__(self, filename='config.json', live=False):
         self.conf_file = filename
+        self.live = live
         self.template = """{
             "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
             "main_guild": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
@@ -14,6 +15,19 @@ class Config(dict):
             "cheese_weight": 30
         }"""
         self.load()
+
+    def __setitem__(self, key, value, /):
+        """
+        Override the setitem function to save after every alteration
+        - self.live must be true
+        """
+        Changed = False
+        if key in self.keys():
+            Changed = self[key] != value
+        if Changed:
+            super().__setitem__(key, value)
+            if self.live:
+                self.save()
 
     def load(self):
         try:
