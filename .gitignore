@@ -1,5 +1,5 @@
-config.json
-cheese_store.json
+*config.json
+*_store.json
 # ignore venv
 .venv
 __pycache__
